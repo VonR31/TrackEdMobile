@@ -52,7 +52,7 @@ const TabBarButton = ({ onPress, onLongPress, isFocused, routeName, label }) => 
         >
             <Animated.View style={animatedIconsStyle}>
                 {React.cloneElement(icon[routeName], {
-                    color: isFocused ? "#673ab7" : "#222", // Icon color based on focus
+                    color: isFocused ? "#FFF" : "#222", // Icon color based on focus
                 })}
             </Animated.View>
             <Animated.Text 

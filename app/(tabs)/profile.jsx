@@ -1,12 +1,11 @@
 import { View, Text, TouchableOpacity, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { tw } from 'react-native-tailwindcss';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = () => {
-  const navigation = useNavigation();
-
+  const router = useRouter();
 
   // Sample student data - replace with actual data from your backend/storage
   const studentData = {
@@ -35,11 +34,8 @@ const Profile = () => {
             try {
               // Clear authentication data
               await AsyncStorage.multiRemove(['isAuthenticated', 'userRole']);
-              // Navigate to login screen
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'Login' }],
-              });
+              // Navigate to login screen using the correct path
+              router.replace('/login');
             } catch (error) {
               console.error('Error during logout:', error);
               Alert.alert('Error', 'Failed to logout. Please try again.');
