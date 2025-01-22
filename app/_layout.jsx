@@ -1,4 +1,4 @@
-import { useFonts } from 'expo-font';
+import { useFonts, Montserrat_500Medium, Montserrat_600SemiBold } from '@expo-google-fonts/montserrat';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
@@ -14,7 +14,8 @@ export default function RootLayout() {
 
   // Load fonts
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
   });
 
   // Check authentication status
@@ -54,14 +55,42 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="login" options={{ headerShown: false }} />
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: '#ffffff' }
+      }}
+    >
+      <Stack.Screen 
+        name="login" 
+        options={{ 
+          headerShown: false 
+        }} 
+      />
       <Stack.Screen 
         name="(tabs)" 
-        options={{ 
-          headerShown: false,
-          // Prevent going back to login
-          gestureEnabled: false
+        options={{
+          headerShown: true,
+          gestureEnabled: false,
+          headerTitle: 'TrackEd',
+          headerTitleStyle: {
+            fontFamily: 'Montserrat_600SemiBold',
+            fontSize: 24,
+            fontWeight: '800',
+            color: '#1a365d',
+          },
+          headerStyle: {
+            backgroundColor: '#ffffff',
+            borderBottomWidth: 1,
+            borderBottomColor: '#e2e8f0',
+            elevation: 2,
+            shadowColor: '#000000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 3,
+          },
+          headerTitleAlign: 'center',
+          headerShadowVisible: true,
         }} 
       />
     </Stack>

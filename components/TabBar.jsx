@@ -32,7 +32,7 @@ export function TabBar({ state, descriptors, navigation }) {
       width: buttonWidth - 30,  // Slight margin for aesthetics
       height: dimensions.height - 15,
       borderRadius: 25,  // Match the button's rounded corners
-      backgroundColor: '#723FEB',
+      backgroundColor: '#800000',
       position: 'absolute',
       marginHorizontal: 15,
     };

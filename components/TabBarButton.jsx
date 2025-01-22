@@ -33,7 +33,7 @@ const TabBarButton = ({ onPress, onLongPress, isFocused, routeName, label }) => 
 
     // Base style for the text, with color depending on the focus state
     const baseTextStyle = {
-        color: isFocused ? "#673ab7" : "#222",
+        color: isFocused ? "#800000" : "#222",
         fontSize: 13,
     };
 

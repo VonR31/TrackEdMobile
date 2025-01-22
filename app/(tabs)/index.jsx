@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { tw } from 'react-native-tailwindcss';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Page = () => {
-  const [darkMode, setDarkMode] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState(null);
 
   // Sample student data
@@ -14,7 +13,6 @@ const Page = () => {
       code: "TechnoPre",
       schedule: "MWF 9:00-10:30 AM",
       instructor: "Ms. Lopez",
-      room: "Room 301",
       attendance: {
         present: 24,
         late: 3,
@@ -31,7 +29,6 @@ const Page = () => {
       code: "GE108",
       schedule: "TTH 1:00-2:30 PM",
       instructor: "Dr. Ople",
-      room: "Room 205",
       attendance: {
         present: 26,
         late: 2,
@@ -48,7 +45,6 @@ const Page = () => {
       code: "ITElectv3",
       schedule: "MWF 2:00-3:30 PM",
       instructor: "Ms. Libunao",
-      room: "Room 405",
       attendance: {
         present: 25,
         late: 2,
@@ -62,56 +58,31 @@ const Page = () => {
     }
   ];
 
-  useEffect(() => {
-    loadTheme();
-  }, []);
-
-  const loadTheme = async () => {
-    try {
-      const savedTheme = await AsyncStorage.getItem('theme');
-      setDarkMode(savedTheme === 'dark');
-    } catch (error) {
-      console.error('Error loading theme:', error);
-    }
-  };
-
-  const toggleTheme = async () => {
-    try {
-      await AsyncStorage.setItem('theme', !darkMode ? 'dark' : 'light');
-      setDarkMode(!darkMode);
-    } catch (error) {
-      console.error('Error saving theme:', error);
-    }
-  };
-
   const SubjectCard = ({ subject }) => (
     <TouchableOpacity
       style={[
         tw.p4,
         tw.roundedLg,
         tw.mB4,
-        darkMode ? tw.bgGray800 : tw.bgWhite,
+        tw.bgWhite,
         tw.shadow
       ]}
       onPress={() => setSelectedSubject(subject)}
     >
-      <Text style={[tw.textLg, tw.fontBold, darkMode ? tw.textWhite : tw.textBlack]}>
+      <Text style={[tw.textLg, tw.fontBold, tw.textBlack]}>
         {subject.name}
       </Text>
-      <Text style={[tw.textSm, tw.mT2, darkMode ? tw.textGray300 : tw.textGray600]}>
+      <Text style={[tw.textSm, tw.mT2, tw.textGray600]}>
         Instructor: {subject.instructor}
       </Text>
-      <Text style={[tw.textSm, darkMode ? tw.textGray300 : tw.textGray600]}>
+      <Text style={[tw.textSm, tw.textGray600]}>
         Schedule: {subject.schedule}
       </Text>
-      <Text style={[tw.textSm, darkMode ? tw.textGray300 : tw.textGray600]}>
-        Room: {subject.room}
-      </Text>
       <View style={[tw.flexRow, tw.justifyBetween, tw.itemsCenter, tw.mT2]}>
-        <Text style={[tw.textSm, darkMode ? tw.textGray300 : tw.textGray600]}>
+        <Text style={[tw.textSm, tw.textGray600]}>
           Attendance:
         </Text>
-        <Text style={[tw.fontBold, darkMode ? tw.textWhite : tw.textBlack]}>
+        <Text style={[tw.fontBold, tw.textBlack]}>
           {((subject.attendance.present / subject.attendance.total) * 100).toFixed(1)}%
         </Text>
       </View>
@@ -127,25 +98,32 @@ const Page = () => {
       <ScrollView style={[tw.p4]}>
         <View style={[tw.mB4]}>
           <View style={[tw.flexRow, tw.justifyBetween, tw.itemsCenter]}>
-            <Text style={[tw.textXl, tw.fontBold, darkMode ? tw.textWhite : tw.textBlack]}>
+            <Text style={[tw.textXl, tw.fontBold, tw.textWhite]}>
               {selectedSubject.name}
             </Text>
             <TouchableOpacity
-              style={[tw.p2, tw.roundedLg, darkMode ? tw.bgGray700 : tw.bgGray200]}
+              style={[tw.p3, tw.roundedLg, { 
+                backgroundColor: '#800000',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5
+              }]}
               onPress={() => setSelectedSubject(null)}
             >
-              <Text style={[darkMode ? tw.textWhite : tw.textBlack]}>Back</Text>
+              <Text style={[tw.textWhite]}>Back</Text>
             </TouchableOpacity>
           </View>
 
           {/* Attendance Card */}
-          <View style={[tw.mT4, tw.p4, tw.roundedLg, darkMode ? tw.bgGray700 : tw.bgGray100]}>
-            <Text style={[tw.textLg, tw.fontBold, tw.mB4, darkMode ? tw.textWhite : tw.textBlack]}>
+          <View style={[tw.mT4, tw.p4, tw.roundedLg, tw.bgGray100]}>
+            <Text style={[tw.textLg, tw.fontBold, tw.mB4, tw.textBlack]}>
               Attendance Summary
             </Text>
             <View style={[tw.flexRow, tw.justifyBetween, tw.mB4]}>
-              <Text style={[darkMode ? tw.textWhite : tw.textBlack]}>Attendance Rate:</Text>
-              <Text style={[tw.fontBold, darkMode ? tw.textWhite : tw.textBlack]}>
+              <Text style={[tw.textBlack]}>Attendance Rate:</Text>
+              <Text style={[tw.fontBold, tw.textBlack]}>
                 {attendancePercentage.toFixed(1)}%
               </Text>
             </View>
@@ -166,43 +144,71 @@ const Page = () => {
           </View>
 
           {/* Grades Card */}
-          <View style={[tw.mT4, tw.p4, tw.roundedLg, darkMode ? tw.bgGray700 : tw.bgGray100]}>
-            <Text style={[tw.textLg, tw.fontBold, tw.mB4, darkMode ? tw.textWhite : tw.textBlack]}>
+          <View style={[tw.mT4, tw.p4, tw.roundedLg, tw.bgGray100]}>
+            <Text style={[tw.textLg, tw.fontBold, tw.mB4, tw.textBlack]}>
               Grade Summary
             </Text>
             <View style={[tw.spaceY2]}>
               <View style={[tw.flexRow, tw.justifyBetween]}>
-                <Text style={[darkMode ? tw.textWhite : tw.textBlack]}>Midterm:</Text>
-                <Text style={[darkMode ? tw.textWhite : tw.textBlack]}>
+                <Text style={[tw.textBlack]}>Midterm:</Text>
+                <Text style={[tw.textBlack]}>
                   {selectedSubject.grades.midterm || 'N/A'}
                 </Text>
               </View>
               <View style={[tw.flexRow, tw.justifyBetween]}>
-                <Text style={[darkMode ? tw.textWhite : tw.textBlack]}>Finals:</Text>
-                <Text style={[darkMode ? tw.textWhite : tw.textBlack]}>
+                <Text style={[tw.textBlack]}>Finals:</Text>
+                <Text style={[tw.textBlack]}>
                   {selectedSubject.grades.finals || 'N/A'}
                 </Text>
               </View>
             </View>
           </View>
         </View>
+        <View style={[tw.p4, {marginBottom: 380 }]}>
+                    <TouchableOpacity
+                      style={[
+                        tw.p4,
+                        tw.roundedLg,
+                        tw.wFull,
+                        tw.itemsCenter,
+                        {
+                          backgroundColor: '#800000',
+                          shadowColor: '#000',
+                          shadowOffset: { width: 0, height: 2 },
+                          shadowOpacity: 0.25,
+                          shadowRadius: 3.84,
+                          elevation: 5
+                        }
+                      ]}
+                    >
+                      <Text style={[tw.textBase, tw.fontBold, tw.textWhite]}>Scan QR</Text>
+                    </TouchableOpacity>
+                  </View>
       </ScrollView>
     );
   };
 
   return (
-    <View style={[tw.flex1, tw.bgGray100]}>
-      {/* Main Content */}
-      <ScrollView style={[tw.flex1, tw.p4]}>
-        {selectedSubject ? (
-          renderSubjectDetails()
-        ) : (
-          studentSubjects.map((subject) => (
-            <SubjectCard key={subject.code} subject={subject} />
-          ))
-        )}
-      </ScrollView>
+    <View style={[tw.flex1]}>
+      <LinearGradient
+        colors={['#800000', '#A52A2A', '#D2691E']}
+        style={[tw.flex1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        {/* Main Content */}
+        <ScrollView style={[tw.flex1, tw.p4]}>
+          {selectedSubject ? (
+            renderSubjectDetails()
+          ) : (
+            studentSubjects.map((subject) => (
+              <SubjectCard key={subject.code} subject={subject} />
+            ))
+          )}
+        </ScrollView>
+      </LinearGradient>
     </View>
   );
 }
+
 export default Page;
