@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { tw } from 'react-native-tailwindcss';
 import { LinearGradient } from 'expo-linear-gradient';
 
+
+
 const Page = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
 
@@ -90,6 +92,7 @@ const Page = () => {
   );
 
   const renderSubjectDetails = () => {
+
     if (!selectedSubject) return null;
 
     const attendancePercentage = (selectedSubject.attendance.present / selectedSubject.attendance.total) * 100;
