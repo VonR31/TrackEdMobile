@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { tw } from 'react-native-tailwindcss';
 import { LinearGradient } from 'expo-linear-gradient';
 
-
-
 const Page = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   // Sample student data
   const studentSubjects = [
@@ -92,10 +91,76 @@ const Page = () => {
   );
 
   const renderSubjectDetails = () => {
-
     if (!selectedSubject) return null;
 
     const attendancePercentage = (selectedSubject.attendance.present / selectedSubject.attendance.total) * 100;
+
+    const AttendanceModal = () => {
+      const currentDate = new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      return (
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={showModal}
+          onRequestClose={() => setShowModal(false)}
+        >
+          <View style={[
+            tw.flex1,
+            tw.justifyCenter,
+            tw.itemsCenter,
+            tw.p4,
+            { backgroundColor: 'rgba(0, 0, 0, 0.5)' }
+          ]}>
+            <View style={[
+              tw.bgWhite,
+              tw.p6,
+              tw.roundedLg,
+              tw.w4_5,
+              tw.itemsCenter,
+              tw.shadow2xl
+            ]}>
+              <View style={[tw.bgGreen200, tw.p3, tw.roundedFull, tw.mB4]}>
+                <Text style={[tw.textXl, tw.fontBold, tw.textGreen800]}>✓</Text>
+              </View>
+              
+              <Text style={[tw.textXl, tw.fontBold, tw.textCenter, tw.mB2]}>
+                Attendance Recorded
+              </Text>
+              
+              <Text style={[tw.textBase, tw.textCenter, tw.textGray600, tw.mB4]}>
+                You have been marked present for{'\n'}{selectedSubject.name}
+              </Text>
+              
+              <Text style={[tw.textSm, tw.textGray500, tw.textCenter, tw.mB4]}>
+                {currentDate}
+              </Text>
+
+              <TouchableOpacity
+                style={[
+                  tw.p3,
+                  tw.roundedLg,
+                  tw.w32,
+                  { backgroundColor: '#800000' }
+                ]}
+                onPress={() => setShowModal(false)}
+              >
+                <Text style={[tw.textWhite, tw.textCenter, tw.fontBold]}>
+                  Close
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      );
+    };
 
     return (
       <ScrollView style={[tw.p4]}>
@@ -168,25 +233,27 @@ const Page = () => {
           </View>
         </View>
         <View style={[tw.p4, {marginBottom: 380 }]}>
-                    <TouchableOpacity
-                      style={[
-                        tw.p4,
-                        tw.roundedLg,
-                        tw.wFull,
-                        tw.itemsCenter,
-                        {
-                          backgroundColor: '#800000',
-                          shadowColor: '#000',
-                          shadowOffset: { width: 0, height: 2 },
-                          shadowOpacity: 0.25,
-                          shadowRadius: 3.84,
-                          elevation: 5
-                        }
-                      ]}
-                    >
-                      <Text style={[tw.textBase, tw.fontBold, tw.textWhite]}>Scan QR</Text>
-                    </TouchableOpacity>
-                  </View>
+          <TouchableOpacity
+            style={[
+              tw.p4,
+              tw.roundedLg,
+              tw.wFull,
+              tw.itemsCenter,
+              {
+                backgroundColor: '#800000',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5
+              }
+            ]}
+            onPress={() => setShowModal(true)}
+          >
+            <Text style={[tw.textBase, tw.fontBold, tw.textWhite]}>Scan QR</Text>
+          </TouchableOpacity>
+        </View>
+        <AttendanceModal />
       </ScrollView>
     );
   };

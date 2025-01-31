@@ -108,7 +108,7 @@ const Login = () => {
                 <Text
                   style={[tw.textSm, tw.fontMedium, tw.textGray700, tw.mB2]}
                 >
-                  Student Email
+                   Email
                 </Text>
                 <TextInput
                   style={[
@@ -121,7 +121,7 @@ const Login = () => {
                       backgroundColor: "rgba(255, 255, 255, 0.9)",
                     },
                   ]}
-                  placeholder="Enter your Student Email"
+                  placeholder="Enter your Email"
                   value={studentEmail}
                   onChangeText={setStudentEmail}
                   autoCapitalize="none"
